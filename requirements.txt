@@ -1,6 +1,8 @@
 azure.search.documents==11.4.0b8
+urllib3==1.26.6
 openai
 chainlit
 python-dotenv
 langchain
 langchain-openai
+
