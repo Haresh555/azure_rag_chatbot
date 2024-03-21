@@ -28,12 +28,15 @@ async  def factory():
 
 @cl.on_message
 async  def main(message):
-    query = str(message.content)
-    print(query)
+
+
+    coversation_history = cl.user_session.get("coversation_history"," ")
+    coversation_history = coversation_history + str(message.content)
+
     search_client = cl.user_session.get("search_client")
     embeddings_model = cl.user_session.get("embeddings_model")
     open_ai_client = cl.user_session.get("open_ai_client")
-    vector = Vector(value=embeddings_model.embed_query(query), k=3, fields="embedding")
+    vector = Vector(value=embeddings_model.embed_query(coversation_history), k=3, fields="embedding")
     result = search_client.search(search_text=None, vectors=[vector], select=["content"])
     input_text = ' '
     for rs in result:
@@ -45,12 +48,15 @@ async  def main(message):
                f"---------------------------------------\n"
                f"{input_text}\n"
                f" Given strictly the context information and not the prior knowledge ,"
-               f" Answer the query elaboratively and friendly.If the query doesnot match the context information please respond with appropriate message saying he context is not available \n"
-               f"Query : {query} \n"
+               f" Answer the query precisely  and friendly.If the query doesnot match the context information please respond with appropriate message saying he context is not available \n"
+               f"Query : {coversation_history} \n"
                f"Answer : ",
         max_tokens=250,
         temperature=1
     )
+    coversation_history = coversation_history + response.choices[0].text
+    cl.user_session.set("coversation_history",coversation_history)
+
     print(response.choices[0].text)
     response_msg = cl.Message(content="")
     for token in response.choices[0].text:
