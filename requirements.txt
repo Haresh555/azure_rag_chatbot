@@ -3,4 +3,4 @@ openai
 chainlit
 python-dotenv
 langchain
-langcbain-openai
+langchain-openai
