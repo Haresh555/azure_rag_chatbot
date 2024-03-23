@@ -37,10 +37,12 @@ async  def main(message):
     embeddings_model = cl.user_session.get("embeddings_model")
     open_ai_client = cl.user_session.get("open_ai_client")
     vector = Vector(value=embeddings_model.embed_query(coversation_history), k=3, fields="embedding")
-    result = search_client.search(search_text=None, vectors=[vector], select=["content"])
+    result = search_client.search(search_fields=['content'], search_text=None, vectors=[vector],
+                                  select=["content", "documentId"],
+                                  query_type='semantic')
     input_text = ' '
-    for rs in result:
-        input_text = input_text + rs['content']
+    result_list = [rs for rs in result]
+    input_text = ' '.join([rs['content'] for rs in result_list])
     response = open_ai_client.completions.create(
         model="gpt-3.5-turbo-instruct",
         # prompt=f"Answer the query based on given input text in brief less than 100 words.Please respond back with citations. Input{input_text}. Question: {query}",
@@ -55,9 +57,26 @@ async  def main(message):
         temperature=1
     )
     coversation_history = coversation_history + response.choices[0].text
+    answer = response.choices[0].text
+
     cl.user_session.set("coversation_history",coversation_history)
 
-    print(response.choices[0].text)
-    response_msg = cl.Message(content="")
-    for token in response.choices[0].text:
-        await  response_msg.stream_token(token)
+    text_elements = []
+
+    if len(result_list) > 0:
+        for source_idx, result in enumerate(result_list):
+            # print(result)
+
+            source_name = result['documentId']
+            # Create the text element referenced in the message
+            text_elements.append(
+                cl.Text(content=result['content'], name=source_name)
+            )
+        source_names = [text_el.name for text_el in text_elements]
+
+        if source_names:
+            answer += "\n\nSources Refered  for response:\n" + str(',\n  '.join(source_names))
+        else:
+            answer += "\nNo Citations found"
+
+    await cl.Message(content=answer, elements=text_elements).send()
