@@ -1,3 +1,7 @@
 *.azure
 *.env
 *.bak
+.files/1fb11189-742f-4a72-a058-ab0f8c737469/13589d66-bc5e-4fcd-b35b-46f4159885f3.txt
+*.txt
+*.pyc
+app/__pycache__/query_index.cpython-38.pyc
