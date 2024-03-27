@@ -41,7 +41,6 @@ async  def main(message):
                                 )
     result_list = [rs  for rs in result]
     input_text = ' '.join([rs['chunkContent']  for rs in result_list] )
-    print ('input_text->' ,input_text)
 
 
 
@@ -51,13 +50,11 @@ async  def main(message):
         prompt=f"Context information is below.\n"
                f"---------------------------------------\n"
                f"{input_text}\n"
-               f" Given   the context information and not the prior knowledge ,"
-               f" Answer the query briefly   and friendly.If the query doesnot match the context information please respond with appropriate message saying he context is not available \n"
+               f" Given  strictly the context information and not the prior knowledge ,"
+               f" Answer the query briefly   and friendly  only if the reponse is available from context.If the query doesnot match the context information please respond with appropriate message saying he context is not available \n"
                f"Query : {query_str} \n"
                f"Answer : ",
-       max_tokens= 200 , temperature=1,
-
-
+        max_tokens=200, temperature=1
     )
     coversation_history = coversation_history + response.choices[0].text
     answer = response.choices[0].text
