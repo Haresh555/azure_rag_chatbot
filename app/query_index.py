@@ -32,6 +32,7 @@ async  def main(message):
     query_str = str(message.content)
     coversation_history = cl.user_session.get("coversation_history"," ")
     coversation_history = coversation_history + str(message.content)
+    print("test")
 
     search_client = cl.user_session.get("search_client")
     embeddings_model = cl.user_session.get("embeddings_model")
