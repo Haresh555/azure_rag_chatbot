@@ -28,11 +28,11 @@ async  def factory():
     print('----------------------------------------------------------------------------')
     print('config.toml CURRENT DIRECTORY---------------------------------------------------')
     with open('config.toml' , 'r') as f:
-        print(f)
+        print(f.read())
     print('----------------------------------------------------------------------------')
     print('config.toml .chainlit DIRECTORY---------------------------------------------------')
     with open('.chainlit/config.toml' , 'r') as f:
-        print(f)
+        print(f.read())
     print('----------------------------------------------------------------------------')
 
 
