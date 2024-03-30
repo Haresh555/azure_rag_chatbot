@@ -25,16 +25,6 @@ async  def factory():
     cl.user_session.set("search_client" ,search_client)
     cl.user_session.set("embeddings_model" ,embeddings_model)
     cl.user_session.set("open_ai_client" ,open_ai_client)
-    print('----------------------------------------------------------------------------')
-    print('config.toml CURRENT DIRECTORY---------------------------------------------------')
-    with open('config.toml' , 'r') as f:
-        print(f.read())
-    print('----------------------------------------------------------------------------')
-    print('config.toml .chainlit DIRECTORY---------------------------------------------------')
-    with open('.chainlit/config.toml' , 'r') as f:
-        print(f.read())
-    print('----------------------------------------------------------------------------')
-
 
 
 
