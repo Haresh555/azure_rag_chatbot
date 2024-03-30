@@ -25,6 +25,13 @@ async  def factory():
     cl.user_session.set("search_client" ,search_client)
     cl.user_session.set("embeddings_model" ,embeddings_model)
     cl.user_session.set("open_ai_client" ,open_ai_client)
+    print('----------------------------------------------------------------------------')
+    print('LISTING CURRENT DIRECTORY---------------------------------------------------')
+    print(os.listdir())
+    print('----------------------------------------------------------------------------')
+
+
+
 
 @cl.on_message
 async  def main(message):
@@ -32,7 +39,7 @@ async  def main(message):
     query_str = str(message.content)
     coversation_history = cl.user_session.get("coversation_history"," ")
     coversation_history = coversation_history + str(message.content)
-    print("test")
+
 
     search_client = cl.user_session.get("search_client")
     embeddings_model = cl.user_session.get("embeddings_model")
